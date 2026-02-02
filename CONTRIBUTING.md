@@ -23,11 +23,11 @@ pnpm changeset
 Follow the prompts to select the packages changed and the semver bump type (patch, minor, major).
 Commit the generated `.changeset/*.md` file.
 
-### Publishing
+### Release Lifecycle
 
-The CI pipeline automatically handles publishing when changesets are merged to main.
-To publish manually (requires auth):
-
-```bash
-pnpm publish
-```
+1. **Development**: Create feature branches.
+2. **Versioning**: Run `pnpm changeset` to generate a version bump file.
+3. **Pull Request**: Open a PR with your code + changeset file.
+4. **Merge**: Once passed CI, merge to `main`.
+5. **Version PR**: The "Release" GitHub Action will detect the changeset and open a _Version Packages_ PR.
+6. **Publish**: Merging the _Version Packages_ PR will trigger the release to NPM.
