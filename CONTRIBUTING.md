@@ -8,6 +8,18 @@
 4. Implement source in `src/index.ts`.
 5. Add minimal tests.
 
+### What Belongs Here?
+
+- **Adapters**: Code that standardizes a 3rd party service.
+- **Shared Utilities**: Logic used by _at least two_ apps (DRY).
+- **Configurations**: Shared tooling configs (TS, ESLint, Playwright).
+
+### What Does NOT Belong Here?
+
+- App-specific business logic.
+- UI Components (use a separate design system repo).
+- "Helpers" that are only used in one place.
+
 ## Versioning & Publishing
 
 We use [Changesets](https://github.com/changesets/changesets) for versioning.

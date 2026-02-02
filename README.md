@@ -1,52 +1,133 @@
 # wrelik-kit
 
-Shared packages repository for all Wrelik apps. This monorepo hosts vendor-agnostic adapters and utilities for the Wrelik ecosystem.
+Shared packages repository for all Wrelik applications.
+
+This monorepo contains **vendor-agnostic adapters, shared utilities, and configuration packages** used across the Wrelik ecosystem. It defines the integration boundary between application code and third-party services.
+
+This repository is long-lived, intentionally boring, and treated as infrastructure.
+
+---
+
+## Core Principles
+
+- Adapter-first architecture
+- No direct vendor SDK usage in app repos
+- Postgres-first, provider-second
+- Explicit boundaries and minimal surface area
+- No placeholders, no stubs, no mock logic
+- Easy to replace vendors without rewriting apps
+
+If a package does not reduce duplication or enforce a standard, it does not belong here.
+
+---
 
 ## Packages
 
 ### Core
 
-- **[@wrelik/auth](./packages/auth)**: Clerk adapter for authentication and RBAC.
-- **[@wrelik/db](./packages/db)**: Prisma client singleton and tenant contextualization.
-- **[@wrelik/storage](./packages/storage)**: S3-compatible adapter (Cloudflare R2) for file operations.
-- **[@wrelik/errors](./packages/errors)**: Standardized application errors and Sentry integration.
-- **[@wrelik/config](./packages/config)**: Typed environment variable loading with Zod.
+- **@wrelik/auth**  
+  Clerk adapter for authentication, session handling, and RBAC.  
+  Apps must not import Clerk SDKs directly.
+
+- **@wrelik/db**  
+  Prisma client singleton and tenant-context helpers.  
+  Enforces safe multi-tenant access patterns.
+
+- **@wrelik/storage**  
+  S3-compatible adapter (Cloudflare R2).  
+  Handles signed URLs, uploads, downloads, and validation.
+
+- **@wrelik/errors**  
+  Typed application errors and centralized Sentry integration.
+
+- **@wrelik/config**  
+  Typed environment variable loading using Zod.  
+  Provides shared vendor schemas and extension hooks.
 
 ### Services
 
-- **[@wrelik/analytics](./packages/analytics)**: PostHog adapter for server-side analytics.
-- **[@wrelik/email](./packages/email)**: Resend adapter for transactional emails.
-- **[@wrelik/jobs](./packages/jobs)**: Inngest wrapper for background jobs.
+- **@wrelik/analytics**  
+  PostHog adapter for server-side analytics.  
+  Enforces event naming conventions.
+
+- **@wrelik/email**  
+  Resend adapter for transactional email and template registry.
+
+- **@wrelik/jobs**  
+  Inngest wrapper for background jobs and event-driven workflows.
 
 ### Tooling
 
-- **[@wrelik/tsconfig](./packages/tsconfig)**: Shared TypeScript configurations.
-- **[@wrelik/eslint-config](./packages/eslint-config)**: Shared ESLint configuration.
+- **@wrelik/tsconfig**  
+  Shared TypeScript base configurations.
 
-## Getting Started
+- **@wrelik/eslint-config**  
+  Shared ESLint configuration for Node and Next.js projects.
 
-### Installation
+---
+
+## What This Repo Is Not
+
+- Not a UI component library
+- Not app-specific business logic
+- Not a feature playground
+- Not a place to “just put helpers”
+
+Application code lives in app repos.  
+This repo exists to **standardize integrations and enforce discipline**.
+
+---
+
+## Installation (Apps)
+
+Each app consumes packages from this repo as dependencies.
+
+Example:
+
+```bash
+pnpm add @wrelik/auth @wrelik/db @wrelik/storage
+```
+
+Apps must import vendor functionality exclusively through `@wrelik/*` packages.
+
+---
+
+## Development
+
+Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-### Building
+Build all packages:
 
 ```bash
 pnpm build
 ```
 
-### Testing
+Run tests:
 
 ```bash
 pnpm test
 ```
 
-## Architecture
+---
 
-This repository follows a strict "Adapter Pattern" approach.
+## Versioning and Releases
 
-- **No direct vendor SDK usage**: Apps should import from `@wrelik/*` packages, not use `clerk`, `resend`, `posthog` directly.
-- **No placeholders**: All functions are implemented and type-safe.
-- **Strict Boundaries**: Packages do not contain app-specific business logic.
+- This repo uses Changesets.
+- Any change to a package requires a changeset.
+- Breaking changes must be explicit and documented.
+- Apps are responsible for testing upgrades before rollout.
+
+---
+
+## Governance
+
+- Vendor decisions are documented in `DECISIONS.md`
+- Exceptions to the standard stack require written justification
+- Changes that affect app behavior must be reflected in CHANGELOGs downstream
+
+This repo enforces standards.  
+Apps conform to it, not the other way around.
