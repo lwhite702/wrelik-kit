@@ -1,5 +1,13 @@
 # @wrelik/storage
 
+## 0.1.1
+
+### Patch Changes
+
+- Update publishConfig to access:public for all packages.
+- Updated dependencies
+  - @wrelik/errors@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
