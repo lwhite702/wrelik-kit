@@ -1,7 +1,9 @@
 {
   "name": "@wrelik/tsconfig",
   "version": "0.1.0",
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "base.json",
     "next.json",
