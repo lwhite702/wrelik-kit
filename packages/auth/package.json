@@ -1,0 +1,28 @@
+{
+  "name": "@wrelik/auth",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./next": "./dist/next.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/next.ts --format cjs,esm --dts --clean",
+    "lint": "eslint src/",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@wrelik/errors": "workspace:*",
+    "@clerk/backend": "^0.38.0"
+  },
+  "peerDependencies": {
+    "@clerk/nextjs": "^4.29.0"
+  },
+  "devDependencies": {
+    "@wrelik/eslint-config": "workspace:*",
+    "@wrelik/tsconfig": "workspace:*",
+    "tsup": "^8.0.1",
+    "vitest": "^1.2.2"
+  }
+}

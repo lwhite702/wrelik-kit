@@ -1,0 +1,21 @@
+{
+  "name": "@wrelik/db",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "lint": "eslint src/",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@wrelik/errors": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "@wrelik/eslint-config": "workspace:*",
+    "@wrelik/tsconfig": "workspace:*",
+    "tsup": "^8.0.1",
+    "vitest": "^1.2.2"
+  }
+}
