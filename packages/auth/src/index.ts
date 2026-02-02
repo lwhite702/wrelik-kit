@@ -1,11 +1,7 @@
-import { AuthRequiredError, PermissionDeniedError, TenantRequiredError } from '@wrelik/errors';
 import type { SignedInAuthObject, SignedOutAuthObject } from '@clerk/backend';
+import { type WorkflowSession } from './shared';
 
-export interface WorkflowSession {
-  userId: string | null;
-  tenantId: string | null;
-  roles: string[];
-}
+export * from './shared';
 
 export function fromClerkAuth(
   auth: SignedInAuthObject | SignedOutAuthObject | null,
@@ -21,30 +17,4 @@ export function fromClerkAuth(
     tenantId: auth.orgId || null,
     roles,
   };
-}
-
-export function requireUser(session: WorkflowSession | null): string {
-  if (!session || !session.userId) {
-    throw new AuthRequiredError();
-  }
-  return session.userId;
-}
-
-export function requireTenant(session: WorkflowSession | null): string {
-  requireUser(session);
-  if (!session || !session.tenantId) {
-    throw new TenantRequiredError();
-  }
-  return session.tenantId;
-}
-
-export function hasRole(session: WorkflowSession | null, role: string): boolean {
-  if (!session || !session.userId) return false;
-  return session.roles.includes(role);
-}
-
-export function requireRole(session: WorkflowSession | null, role: string) {
-  if (!hasRole(session, role)) {
-    throw new PermissionDeniedError(`Role ${role} required`);
-  }
 }

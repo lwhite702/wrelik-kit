@@ -66,6 +66,38 @@ If a package does not reduce duplication or enforce a standard, it does not belo
 
 ---
 
+## Mobile (Expo) Support
+
+wrelik-kit provides first-class support for Expo (React Native) apps.
+
+### Supported Packages
+
+Import these via the standard package name. They will automatically serve the React Native optimized entrypoint:
+
+- **@wrelik/auth**: Session helpers and types (excludes Next.js logic).
+- **@wrelik/config**: Client-side configuration loading (`loadClientConfig`).
+- **@wrelik/errors**: Error handling with Sentry support.
+- **@wrelik/analytics**: PostHog analytics helpers.
+- **@wrelik/storage**: Upload/download helpers using Signed URLs (no AWS SDK).
+
+### Server-Only Packages
+
+These packages **cannot** be used directly in mobile apps. Importing them will throw a runtime error.
+
+- **@wrelik/db**
+- **@wrelik/email**
+- **@wrelik/jobs**
+
+Mobile apps should interact with these services via your backend API.
+
+### Setup
+
+Ensure your Expo app installs the necessary peer dependencies (e.g., `@sentry/react-native`, `posthog-react-native`) as required.
+
+See [Mobile Support Docs](./docs/MOBILE_SUPPORT.md) for deeper integration details.
+
+---
+
 ## What This Repo Is Not
 
 - Not a UI component library

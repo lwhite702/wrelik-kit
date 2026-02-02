@@ -1,12 +1,15 @@
 import { z } from 'zod';
 import dotenv from 'dotenv';
 import path from 'path';
+import { commonSchema } from './shared';
+
+export * from './shared';
 
 // Load .env from project root
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 export function createEnv<T extends z.ZodRawShape>(schema: T) {
-  const envSchema = z.object(schema);
+  const envSchema = z.object({ ...commonSchema, ...schema });
   const result = envSchema.safeParse(process.env);
 
   if (!result.success) {
@@ -17,7 +20,6 @@ export function createEnv<T extends z.ZodRawShape>(schema: T) {
   return result.data;
 }
 
-// Common schemas
-export const commonSchema = {
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-};
+export function loadServerConfig() {
+  return createEnv({});
+}

@@ -1,5 +1,5 @@
 import { PostHog } from 'posthog-node';
-import { ValidationError } from '@wrelik/errors';
+import { validateEventName } from './shared';
 
 let client: PostHog | null = null;
 
@@ -27,10 +27,7 @@ export function capture(
   options?: { userId?: string },
 ) {
   // Validate naming convention: app.action.object
-  const parts = event.split('.');
-  if (parts.length < 3) {
-    throw new ValidationError(`Event name "${event}" must follow "app.action.object" format`);
-  }
+  validateEventName(event);
 
   // If no user is provided, we can't capture server-side easily without anonymous ID
   // But usually servers have a userId context.
