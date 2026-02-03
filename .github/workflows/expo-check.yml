@@ -1,0 +1,71 @@
+name: Expo Compatibility Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  expo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.5
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Verify Expo Compatibility
+        run: |
+          mkdir expo-check
+          cd expo-check
+          npm init -y
+          # Install dependencies to ensure resolution works (mocking workspace links if needed or just checking imports)
+          # We will just write a script that tries to require the react-native entrypoints and check for forbidden modules.
+
+          cat > check.js << 'EOF'
+          const fs = require('fs');
+          const path = require('path');
+
+          const packages = [
+            '../../packages/auth/dist/react-native.js',
+            '../../packages/config/dist/react-native.js',
+            '../../packages/errors/dist/react-native.js',
+            '../../packages/analytics/dist/react-native.js',
+            '../../packages/storage/dist/react-native.js'
+          ];
+
+          const forbidden = ['fs', 'path', 'crypto', 'stream', 'http', 'https', 'net', 'tls', 'os', 'child_process'];
+
+          let failed = false;
+
+          packages.forEach(pkgPath => {
+            const fullPath = path.resolve(__dirname, pkgPath);
+            if (!fs.existsSync(fullPath)) {
+              console.error(`Missing entrypoint: ${pkgPath}`);
+              failed = true;
+              return;
+            }
+            
+            const content = fs.readFileSync(fullPath, 'utf8');
+            // Simple regex check for require('fs') etc. 
+            // Note: This is a heuristics check. Bundlers usually rename, but tsup cjs output might keep requires.
+            // For ESM, checking for "from 'fs'" etc.
+            
+            forbidden.forEach(mod => {
+              const regex = new RegExp(`require\\(['"]${mod}['"]\\)|from ['"]${mod}['"]`);
+              if (regex.test(content)) {
+                // Ignore if it's in a comment or string (naive check)
+                console.error(`🚨 Forbidden module "${mod}" found in ${pkgPath}`);
+                failed = true;
+              }
+            });
+          });
+
+          if (failed) process.exit(1);
+          console.log("✅ All React Native entrypoints look clean.");
+          EOF
+
+          node check.js

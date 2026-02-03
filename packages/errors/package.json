@@ -4,22 +4,29 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/node.js",
+  "types": "./dist/node.d.ts",
   "exports": {
-    ".": "./dist/index.js",
+    ".": {
+      "react-native": "./dist/react-native.js",
+      "browser": "./dist/browser.js",
+      "import": "./dist/node.js",
+      "require": "./dist/node.js"
+    },
     "./react-native": "./dist/react-native.js"
   },
   "scripts": {
-    "build": "tsup src/index.ts src/react-native.ts --format cjs,esm --dts --clean",
+    "build": "tsup src/node.ts src/browser.ts src/react-native.ts --format cjs,esm --dts --clean",
     "lint": "eslint src/",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@sentry/browser": "^10.38.0",
     "@sentry/node": "^7.101.1",
     "@sentry/react-native": "^5.19.0"
   },
   "devDependencies": {
+    "@types/node": "^25.2.0",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
     "tsup": "^8.0.1",
