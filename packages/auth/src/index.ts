@@ -10,6 +10,7 @@ export function fromClerkAuth(
     return { userId: null, tenantId: null, roles: [] };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const roles = ((auth.sessionClaims?.publicMetadata as any)?.roles as string[]) || [];
 
   return {

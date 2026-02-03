@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import { auth } from '@clerk/nextjs';
 import { fromClerkAuth, type WorkflowSession } from './index';
 

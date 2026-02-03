@@ -5,6 +5,7 @@ export * from './shared';
 
 export function loadClientConfig<T extends z.ZodRawShape>(
   extraSchema: T = {} as T,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   env: Record<string, any> = process.env,
 ) {
   const mergedSchema = z.object({

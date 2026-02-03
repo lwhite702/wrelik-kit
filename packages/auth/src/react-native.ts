@@ -9,6 +9,7 @@ export function mapClerkToSession(
   auth: {
     userId?: string | null;
     orgId?: string | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     session?: { user?: { publicMetadata?: any } };
   } | null,
 ): WorkflowSession {

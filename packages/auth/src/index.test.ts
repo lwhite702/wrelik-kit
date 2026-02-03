@@ -18,6 +18,7 @@ describe('@wrelik/auth', () => {
       userId: 'user_123',
       orgId: 'org_456',
       sessionClaims: { publicMetadata: { roles: ['admin'] } },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
     const session = fromClerkAuth(clerkAuth);

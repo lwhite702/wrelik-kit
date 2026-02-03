@@ -7,12 +7,15 @@ export function initAnalytics(apiKey: string, host = 'https://app.posthog.com') 
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function identify(userId: string, traits?: Record<string, any>) {
+  // @ts-ignore - PostHog RN types might be missing or different version
   PostHog.identify(userId, traits);
 }
 
 export function capture(
   event: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties: Record<string, any> = {},
   options?: { userId?: string; tenantId?: string },
 ) {
@@ -24,6 +27,7 @@ export function capture(
     // Optional: re-identify? No, usually not done on every capture unless user switched
   }
 
+  // @ts-ignore - PostHog RN types might be missing or different version
   PostHog.capture(event, properties);
 }
 

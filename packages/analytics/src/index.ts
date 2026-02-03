@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import { PostHog } from 'posthog-node';
 import { validateEventName } from './shared';
 
@@ -14,6 +15,7 @@ function getClient(safe = false) {
   return client;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function identify(userId: string, traits: Record<string, any>) {
   getClient(true)?.identify({
     distinctId: userId,
@@ -23,6 +25,7 @@ export function identify(userId: string, traits: Record<string, any>) {
 
 export function capture(
   event: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties: Record<string, any> = {},
   options?: { userId?: string },
 ) {

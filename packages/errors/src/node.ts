@@ -3,6 +3,7 @@ import { AppError } from './shared';
 
 export * from './shared';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function captureError(err: unknown, context?: Record<string, any>) {
   if (err instanceof AppError) {
     // Basic logging for expected app errors

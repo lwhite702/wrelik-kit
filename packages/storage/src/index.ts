@@ -1,6 +1,6 @@
+/* eslint-disable no-restricted-imports */
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { ValidationError } from '@wrelik/errors';
 
 export interface StorageConfig {
   accountId: string;

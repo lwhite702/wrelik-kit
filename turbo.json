@@ -23,5 +23,6 @@
     "clean": {
       "cache": false
     }
-  }
+  },
+  "globalDependencies": ["NODE_ENV"]
 }
