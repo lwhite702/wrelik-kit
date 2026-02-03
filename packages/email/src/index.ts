@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { Resend } from 'resend';
 import { ValidationError } from '@wrelik/errors';
 
@@ -43,6 +44,7 @@ export async function sendEmail({ to, subject, html, text, from, tags }: SendEma
 
 // Template Registry
 type TemplateRenderer<T> = (data: T) => { subject: string; html: string; text?: string };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const templates = new Map<string, TemplateRenderer<any>>();
 
 export function defineTemplate<T>(id: string, renderer: TemplateRenderer<T>) {

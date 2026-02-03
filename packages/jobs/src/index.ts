@@ -1,4 +1,5 @@
-import { Inngest, EventSchemas, type GetEvents } from 'inngest';
+// eslint-disable-next-line no-restricted-imports
+import { Inngest } from 'inngest';
 
 // Define the event types map that apps can extend via module augmentation?
 // For now, we use a generic approach or require strict schemas.
@@ -7,7 +8,8 @@ import { Inngest, EventSchemas, type GetEvents } from 'inngest';
 
 let client: Inngest;
 
-export function initJobs(appId: string, eventSchema?: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function initJobs(appId: string) {
   // We can pass schemas if we want strict typing
   client = new Inngest({ id: appId });
 }
@@ -17,6 +19,7 @@ function getClient() {
   return client;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function emit(eventName: string, payload: any) {
   return getClient().send({
     name: eventName,
@@ -28,6 +31,7 @@ export async function emit(eventName: string, payload: any) {
 export function createFunction(
   name: string,
   trigger: { event: string } | { cron: string },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handler: (args: any) => Promise<any>,
 ) {
   return getClient().createFunction({ id: name }, trigger, handler);
