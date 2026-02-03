@@ -1,5 +1,13 @@
 # @wrelik/email
 
+## 0.1.2
+
+### Patch Changes
+
+- a38ebcb: Add React Native / Expo support and enforce server-only boundaries.
+- Updated dependencies [a38ebcb]
+  - @wrelik/errors@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes

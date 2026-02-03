@@ -1,5 +1,11 @@
 # @wrelik/errors
 
+## 0.2.0
+
+### Minor Changes
+
+- a38ebcb: Add React Native / Expo support and enforce server-only boundaries.
+
 ## 0.1.1
 
 ### Patch Changes

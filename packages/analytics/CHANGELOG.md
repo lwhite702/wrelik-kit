@@ -1,5 +1,16 @@
 # @wrelik/analytics
 
+## 0.2.0
+
+### Minor Changes
+
+- a38ebcb: Add React Native / Expo support and enforce server-only boundaries.
+
+### Patch Changes
+
+- Updated dependencies [a38ebcb]
+  - @wrelik/errors@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes
