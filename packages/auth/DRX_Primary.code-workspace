@@ -1,11 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "../../../DRX_Primary"
-		},
-		{
-			"path": "../.."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../../DRX_Primary",
+    },
+    {
+      "path": "../..",
+    },
+    {
+      "path": "../../../DRX_Mobile_App-1",
+    },
+  ],
+  "settings": {},
 }
