@@ -1,0 +1,51 @@
+name: Bootstrap Packages (One-Time)
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to bootstrap'
+        required: true
+        type: choice
+        options:
+          - 'eslint-config'
+          - 'tsconfig'
+      npm_token:
+        description: 'Temporary NPM Token (Automation/Publishing type)'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build --if-present
+
+      - name: Bootstrap Publish
+        run: |
+          cd packages/${{ github.event.inputs.package }}
+          pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ github.event.inputs.npm_token }}
+          NPM_CONFIG_PROVENANCE: true
