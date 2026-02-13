@@ -4,6 +4,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lwhite702/wrelik-kit.git",
+    "directory": "packages/errors"
+  },
   "main": "./dist/node.js",
   "types": "./dist/node.d.ts",
   "exports": {
