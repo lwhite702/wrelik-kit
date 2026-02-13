@@ -2,12 +2,14 @@
 export class AppError extends Error {
   public readonly code: string;
   public readonly statusCode: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public readonly context?: Record<string, any>;
 
   constructor(
     message: string,
     code: string,
     statusCode: number = 500,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context?: Record<string, any>,
   ) {
     super(message);

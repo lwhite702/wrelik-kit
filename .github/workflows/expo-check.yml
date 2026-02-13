@@ -10,9 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
+      - uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -33,11 +31,11 @@ jobs:
           const path = require('path');
 
           const packages = [
-            '../../packages/auth/dist/react-native.js',
-            '../../packages/config/dist/react-native.js',
-            '../../packages/errors/dist/react-native.js',
-            '../../packages/analytics/dist/react-native.js',
-            '../../packages/storage/dist/react-native.js'
+            '../packages/auth/dist/react-native.js',
+            '../packages/config/dist/react-native.js',
+            '../packages/errors/dist/react-native.js',
+            '../packages/analytics/dist/react-native.js',
+            '../packages/storage/dist/react-native.js'
           ];
 
           const forbidden = ['fs', 'path', 'crypto', 'stream', 'http', 'https', 'net', 'tls', 'os', 'child_process'];

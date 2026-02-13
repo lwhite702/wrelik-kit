@@ -14,6 +14,7 @@ export function setUserContext(user: { id: string; email?: string } | null) {
   Sentry.setUser(user);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function captureError(err: unknown, context?: Record<string, any>) {
   if (err instanceof AppError) {
     if (err.statusCode >= 500) {
