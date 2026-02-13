@@ -1,5 +1,11 @@
 # @wrelik/auth
 
+## 0.2.1
+
+### Patch Changes
+
+- adb2048: chore: test release flow with real patch version bump
+
 ## 0.2.0
 
 ### Minor Changes
