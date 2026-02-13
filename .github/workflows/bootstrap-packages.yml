@@ -39,9 +39,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build --filter=@wrelik/${{ github.event.inputs.package }} --if-present
-
       - name: Bootstrap Publish
         run: |
           cd packages/${{ github.event.inputs.package }}
