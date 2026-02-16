@@ -1,5 +1,12 @@
 # @wrelik/auth
 
+## Unreleased
+
+### Patch Changes
+
+- Fix role authorization checks to deny malformed runtime `roles` payloads.
+- Add regression coverage to ensure malformed `roles` values cannot grant access.
+
 ## 0.2.1
 
 ### Patch Changes

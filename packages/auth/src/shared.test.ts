@@ -24,4 +24,17 @@ describe('Auth Shared', () => {
     expect(hasRole(session, 'admin')).toBe(true);
     expect(hasRole(session, 'user')).toBe(false);
   });
+
+  it('does not grant role access when roles has invalid runtime shape', () => {
+    const malformedSession = {
+      userId: 'u1',
+      tenantId: 't1',
+      // Simulates untrusted runtime payload, despite the TypeScript type.
+      roles: 'admin',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
+
+    expect(hasRole(malformedSession, 'admin')).toBe(false);
+    expect(hasRole(malformedSession, 'min')).toBe(false);
+  });
 });

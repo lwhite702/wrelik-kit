@@ -1,5 +1,11 @@
 # @wrelik/errors
 
+## Unreleased
+
+### Patch Changes
+
+- Remove duplicate `skipLibCheck` key from TypeScript config to eliminate build warnings.
+
 ## 0.2.0
 
 ### Minor Changes

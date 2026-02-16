@@ -23,6 +23,7 @@ export function requireTenant(session: WorkflowSession | null): string {
 
 export function hasRole(session: WorkflowSession | null, role: string): boolean {
   if (!session || !session.userId) return false;
+  if (!Array.isArray(session.roles)) return false;
   return session.roles.includes(role);
 }
 
