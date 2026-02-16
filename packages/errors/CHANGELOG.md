@@ -1,5 +1,11 @@
 # @wrelik/errors
 
+## 0.2.1
+
+### Patch Changes
+
+- 2b9cbf7: Fix auth role checks to reject malformed runtime role payloads and remove a duplicate TypeScript compiler option in errors to eliminate build warnings.
+
 ## Unreleased
 
 ### Patch Changes
