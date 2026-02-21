@@ -1,14 +1,38 @@
+/**
+ * This entrypoint throws an error when imported in React Native environments.
+ * @wrelik/db is server-only and cannot be used in client/mobile environments.
+ * 
+ * @module @wrelik/db/react-native
+ */
+
+const message =
+  '@wrelik/db is server-only and cannot be used in client/mobile environments. ' +
+  'Access database functionality via a backend API instead.';
+
 export default function unsupported() {
-  throw new Error(
-    'This package is server-only and cannot be used in client/mobile environments. ' +
-      'Access this functionality via a backend API instead.',
-  );
+  throw new Error(message);
 }
 
-// Using a Proxy to trap named imports if possible, or just the top level throw is usually enough for side-effect imports.
-// But for named imports, we might need to export them?
-// Since we can't mock all exports, the top level throw is best.
-throw new Error(
-  'This package is server-only and cannot be used in client/mobile environments. ' +
-    'Access this functionality via a backend API instead.',
-);
+// Named exports that throw when accessed
+export const setTenantAccessChecker = () => {
+  throw new Error(message);
+};
+
+export const assertTenantAccess = () => {
+  throw new Error(message);
+};
+
+export const withTenant = () => {
+  throw new Error(message);
+};
+
+export const getPrismaSingleton = () => {
+  throw new Error(message);
+};
+
+export const createTenantContext = () => {
+  throw new Error(message);
+};
+
+// Re-export shared types (safe for client)
+export type { TenantContext, AccessChecker } from './shared';

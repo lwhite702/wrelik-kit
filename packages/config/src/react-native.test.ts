@@ -1,10 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { loadClientConfig, clientSchema } from './react-native';
+import { loadClientConfig, clientSchema } from './client';
 
-describe('Config React Native', () => {
+describe('Config Client', () => {
   it('validates client config', () => {
-    // Basic validation test implicitly covered by loadClientConfig calls below
-    // or we can test specific schema constraints if we export schema
     expect(clientSchema).toBeDefined();
   });
 

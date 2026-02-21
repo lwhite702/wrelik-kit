@@ -1,21 +1,18 @@
-import type { SignedInAuthObject, SignedOutAuthObject } from '@clerk/backend';
-import { type WorkflowSession } from './shared';
-
+/**
+ * @wrelik/auth root entrypoint.
+ * 
+ * Exports shared types and helpers only.
+ * For server-side auth, use:
+ * - @wrelik/auth/server (Node.js with @clerk/backend)
+ * - @wrelik/auth/next (Next.js server components)
+ * 
+ * For client-side auth, use:
+ * - @wrelik/auth/client (Browser/React Native)
+ * - @wrelik/auth/react-native (React Native)
+ * 
+ * @deprecated Direct imports from root will be removed in a future version.
+ * Use specific subpaths for your environment.
+ */
 export * from './shared';
-
-export function fromClerkAuth(
-  auth: SignedInAuthObject | SignedOutAuthObject | null,
-): WorkflowSession {
-  if (!auth || !auth.userId) {
-    return { userId: null, tenantId: null, roles: [] };
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const roles = ((auth.sessionClaims?.publicMetadata as any)?.roles as string[]) || [];
-
-  return {
-    userId: auth.userId,
-    tenantId: auth.orgId || null,
-    roles,
-  };
-}
+export { fromClerkAuth } from './server';
+export { mapClerkToSession } from './client';

@@ -1,25 +1,11 @@
-import { z } from 'zod';
-import dotenv from 'dotenv';
-import path from 'path';
-import { commonSchema } from './shared';
-
+/**
+ * @deprecated Use @wrelik/config/server for server-side config loading
+ * or @wrelik/config/client for client-side config loading.
+ * 
+ * The root export will be removed in a future version.
+ * 
+ * This entrypoint no longer calls dotenv.config() automatically.
+ * Use createEnv(schema, { loadDotenv: true }) to load .env explicitly.
+ */
 export * from './shared';
-
-// Load .env from project root
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
-
-export function createEnv<T extends z.ZodRawShape>(schema: T) {
-  const envSchema = z.object({ ...commonSchema, ...schema });
-  const result = envSchema.safeParse(process.env);
-
-  if (!result.success) {
-    console.error('❌ Invalid environment variables:', result.error.format());
-    throw new Error('Invalid environment variables');
-  }
-
-  return result.data;
-}
-
-export function loadServerConfig() {
-  return createEnv({});
-}
+export { createEnv, loadServerConfig, loadEnvFromCwd, type CreateEnvOptions } from './server';
