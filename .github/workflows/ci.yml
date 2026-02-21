@@ -30,7 +30,13 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: Workspace Integrity
+        run: pnpm check:workspace-integrity
+
+      - name: Runtime Contracts
+        run: pnpm check:runtime-contracts
 
       - name: Build
         run: pnpm build
@@ -43,6 +49,12 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Bundle Boundary Check
+        run: pnpm check:bundles
+
+      - name: Circular Dependency Check
+        run: pnpm check:cycles
 
       - name: Check for Changesets
         if: github.event_name == 'pull_request'

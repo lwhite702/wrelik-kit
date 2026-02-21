@@ -1,160 +1,155 @@
-/**
- * @wrelik/eslint-config
- * 
- * Shared ESLint configuration for Wrelik projects.
- * Enforces vendor SDK boundaries and server/client separation.
- */
-
-/**
- * Server-only packages that should never be imported in client code
- */
-const serverOnlyPackages = [
-  '@wrelik/db',
-  '@wrelik/email',
-  '@wrelik/jobs',
-];
-
-/**
- * Server-only subpaths that should never be imported in client code
- */
-const serverOnlySubpaths = [
-  '@wrelik/auth/server',
-  '@wrelik/auth/next',
-  '@wrelik/config/server',
-  '@wrelik/analytics/server',
-  '@wrelik/storage/server',
-  '@wrelik/errors/server',
-];
-
-/**
- * Vendor SDKs that should only be imported through @wrelik/* packages
- */
-const vendorSdkRestrictions = [
-  {
-    name: '@clerk/nextjs',
-    message: 'Please use @wrelik/auth instead.',
-  },
-  {
-    name: '@clerk/backend',
-    message: 'Please use @wrelik/auth/server instead.',
-  },
-  {
-    name: '@prisma/client',
-    message: 'Please use @wrelik/db instead.',
-  },
-  {
-    name: 'resend',
-    message: 'Please use @wrelik/email instead.',
-  },
-  {
-    name: 'posthog-node',
-    message: 'Please use @wrelik/analytics/server instead.',
-  },
-  {
-    name: 'posthog-js',
-    message: 'Please use @wrelik/analytics/client instead.',
-  },
-  {
-    name: 'inngest',
-    message: 'Please use @wrelik/jobs instead.',
-  },
-  {
-    name: '@sentry/node',
-    message: 'Please use @wrelik/errors/server instead.',
-  },
-  {
-    name: '@sentry/browser',
-    message: 'Please use @wrelik/errors/client instead.',
-  },
-  {
-    name: '@sentry/react-native',
-    message: 'Please use @wrelik/errors/react-native instead.',
-  },
-];
-
-/**
- * Node.js built-in modules that should never be in client bundles
- */
-const nodeOnlyModules = [
-  'fs',
-  'net',
-  'tls',
+const NODE_BUILTINS = [
+  'assert',
+  'buffer',
   'child_process',
   'crypto',
-  'path',
-  'os',
-  'stream',
+  'events',
+  'fs',
   'http',
   'https',
-  'zlib',
-  'cluster',
-  'dgram',
-  'dns',
-  'readline',
-  'repl',
+  'module',
+  'net',
+  'os',
+  'path',
+  'stream',
+  'tls',
+  'url',
+  'util',
   'vm',
   'worker_threads',
+  'zlib',
+];
+
+const SERVER_ONLY_SDKS = [
+  '@clerk/backend',
+  '@clerk/nextjs',
+  'dotenv',
+  'inngest',
+  'posthog-node',
+  'resend',
+  '@sentry/node',
+  '@aws-sdk/client-s3',
+  '@aws-sdk/s3-request-presigner',
 ];
 
 module.exports = {
   extends: ['next', 'turbo', 'prettier', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'only-warn'],
-  ignorePatterns: ['dist', '**/*.css', 'node_modules'],
+  plugins: ['@typescript-eslint', 'only-warn', 'import'],
+  ignorePatterns: ['dist', '**/*.css'],
   rules: {
-    // TypeScript rules
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-    
-    // Next.js rules
     '@next/next/no-html-link-for-pages': 'off',
     'react/jsx-key': 'off',
-
-    // Vendor SDK restrictions
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    'import/no-cycle': 'error',
+    'import/no-unassigned-import': ['error', { allow: [] }],
     'no-restricted-imports': [
       'error',
       {
-        paths: vendorSdkRestrictions,
+        paths: [
+          {
+            name: '@clerk/nextjs',
+            message: 'Use @wrelik/auth/server instead.',
+          },
+          {
+            name: '@prisma/client',
+            message: 'Expose domain-level operations from @wrelik/db/server instead.',
+          },
+          {
+            name: 'resend',
+            message: 'Use @wrelik/email/server instead.',
+          },
+          {
+            name: 'posthog-node',
+            message: 'Use @wrelik/analytics/server instead.',
+          },
+          {
+            name: 'inngest',
+            message: 'Use @wrelik/jobs/server instead.',
+          },
+          {
+            name: '@sentry/node',
+            message: 'Use @wrelik/errors/server instead.',
+          },
+        ],
         patterns: [
           {
             group: ['@aws-sdk/*'],
-            message: 'Please use @wrelik/storage instead.',
+            message: 'Use @wrelik/storage/server instead.',
           },
         ],
       },
     ],
   },
   overrides: [
-    // Client-side files (React components with 'use client')
     {
-      files: ['**/*.tsx', '**/*.ts'],
+      files: ['**/src/client/**/*.{ts,tsx,js,jsx}'],
       rules: {
         'no-restricted-imports': [
           'error',
           {
-            paths: [
-              ...vendorSdkRestrictions,
-              ...serverOnlyPackages.map((pkg) => ({
-                name: pkg,
-                message: `${pkg} is server-only and cannot be used in client code.`,
-              })),
-              ...serverOnlySubpaths.map((subpath) => ({
-                name: subpath,
-                message: `${subpath} is server-only and cannot be used in client code.`,
-              })),
-              ...nodeOnlyModules.map((mod) => ({
-                name: mod,
-                message: `'${mod}' is a Node.js built-in and cannot be used in client code.`,
-              })),
-            ],
+            paths: SERVER_ONLY_SDKS.concat(
+              NODE_BUILTINS,
+              NODE_BUILTINS.map((name) => `node:${name}`),
+            ).map((name) => ({
+              name,
+              message: 'Client runtime modules must remain browser/isomorphic safe.',
+            })),
             patterns: [
               {
-                group: ['@aws-sdk/*'],
-                message: 'Please use @wrelik/storage instead.',
+                group: ['@wrelik/*/server', '**/server', '**/server/*', '../server', '../server/*'],
+                message: 'Client runtime modules cannot import server runtime modules.',
               },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['**/src/shared/**/*.{ts,tsx,js,jsx}'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            paths: SERVER_ONLY_SDKS.concat(
+              NODE_BUILTINS,
+              NODE_BUILTINS.map((name) => `node:${name}`),
+            ).map((name) => ({
+              name,
+              message: 'Shared runtime modules must remain fully isomorphic.',
+            })),
+            patterns: [
               {
-                group: ['@wrelik/*/server'],
-                message: 'Server-only subpaths cannot be imported in client code.',
+                group: [
+                  '@wrelik/*/server',
+                  '@wrelik/*/client',
+                  '**/server',
+                  '**/server/*',
+                  '**/client',
+                  '**/client/*',
+                  '../server',
+                  '../server/*',
+                  '../client',
+                  '../client/*',
+                ],
+                message: 'Shared runtime modules cannot import server/client runtime modules.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['**/src/server/**/*.{ts,tsx,js,jsx}'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            patterns: [
+              {
+                group: ['@wrelik/*/client', '**/client', '**/client/*', '../client', '../client/*'],
+                message: 'Server runtime modules cannot import client runtime modules.',
               },
             ],
           },
@@ -162,15 +157,4 @@ module.exports = {
       },
     },
   ],
-  settings: {
-    next: {
-      rootDir: ['packages/*/'],
-    },
-  },
 };
-
-// Export constants for programmatic use
-module.exports.serverOnlyPackages = serverOnlyPackages;
-module.exports.serverOnlySubpaths = serverOnlySubpaths;
-module.exports.vendorSdkRestrictions = vendorSdkRestrictions;
-module.exports.nodeOnlyModules = nodeOnlyModules;

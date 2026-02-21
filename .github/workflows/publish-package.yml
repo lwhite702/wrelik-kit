@@ -37,6 +37,18 @@ jobs:
       - name: Build
         run: pnpm run build --if-present
 
+      - name: Workspace Integrity
+        run: pnpm check:workspace-integrity
+
+      - name: Runtime Contracts
+        run: pnpm check:runtime-contracts
+
+      - name: Bundle Boundary Check
+        run: pnpm check:bundles
+
+      - name: Circular Dependency Check
+        run: pnpm check:cycles
+
       - name: Test
         run: pnpm test
 

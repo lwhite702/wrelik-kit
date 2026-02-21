@@ -2,7 +2,8 @@
   "extends": "@wrelik/tsconfig/node.json",
   "compilerOptions": {
     "outDir": "dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2022"]
   },
   "include": ["src"]
 }

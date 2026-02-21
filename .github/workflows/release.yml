@@ -34,8 +34,12 @@ jobs:
           npm install -g npm@latest
           pnpm install -g pnpm@latest
 
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:workspace-integrity
+      - run: pnpm check:runtime-contracts
       - run: pnpm build
+      - run: pnpm check:bundles
+      - run: pnpm check:cycles
 
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
