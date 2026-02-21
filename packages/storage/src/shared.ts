@@ -1,3 +1,7 @@
+/**
+ * Shared storage types and helpers.
+ * @module @wrelik/storage/shared
+ */
 import { ValidationError } from '@wrelik/errors';
 
 export function validateUpload(
@@ -11,4 +15,17 @@ export function validateUpload(
     throw new ValidationError(`Invalid file type ${file.contentType}`);
   }
   return true;
+}
+
+export interface StorageConfig {
+  accountId: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  bucketName: string;
+  region?: string;
+}
+
+export interface UploadPolicy {
+  maxSizeBytes: number;
+  allowedTypes: string[];
 }

@@ -16,7 +16,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version": "changeset version",
-    "publish": "changeset publish"
+    "publish": "changeset publish",
+    "check:circular-deps": "node scripts/check-circular-deps.js",
+    "check:bundle-scan": "node scripts/scan-bundles.js",
+    "check:smoke-test": "node scripts/smoke-test.js",
+    "check:all": "pnpm check:circular-deps && pnpm check:smoke-test && pnpm check:bundle-scan"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

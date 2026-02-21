@@ -47,3 +47,36 @@ jobs:
       - name: Check for Changesets
         if: github.event_name == 'pull_request'
         run: pnpm changeset status
+
+  # Runtime safety checks
+  runtime-safety:
+    name: Runtime Safety Checks
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check Circular Dependencies
+        run: pnpm check:circular-deps
+
+      - name: Smoke Test (Export Resolution)
+        run: pnpm check:smoke-test
+
+      - name: Bundle Scan (Forbidden Modules)
+        run: pnpm check:bundle-scan

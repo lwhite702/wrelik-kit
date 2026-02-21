@@ -1,9 +1,15 @@
+/**
+ * React Native analytics helpers using PostHog React Native SDK.
+ * @module @wrelik/analytics/react-native
+ */
 import PostHog from 'posthog-react-native';
-import { validateEventName } from './shared';
+import { validateEventName, type AnalyticsConfig } from './shared';
 
-export function initAnalytics(apiKey: string, host = 'https://app.posthog.com') {
-  PostHog.initAsync(apiKey, {
-    host,
+export * from './shared';
+
+export function initAnalytics(config: AnalyticsConfig) {
+  PostHog.initAsync(config.apiKey, {
+    host: config.host || 'https://app.posthog.com',
   });
 }
 
@@ -34,3 +40,5 @@ export function capture(
 export async function shutdown() {
   // PostHog RN doesn't need explicit shutdown usually
 }
+
+export { PostHog };

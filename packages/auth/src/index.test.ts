@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { requireUser, fromClerkAuth } from './index';
+import { requireUser } from './shared';
+import { fromClerkAuth } from './server';
 import { AuthRequiredError } from '@wrelik/errors';
 
 describe('@wrelik/auth', () => {
