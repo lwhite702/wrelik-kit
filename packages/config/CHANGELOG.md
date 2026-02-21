@@ -1,5 +1,11 @@
 # @wrelik/config
 
+## 2.0.0
+
+### Major Changes
+
+- 818ed58: Refactor runtime packages to strict subpath exports (`/server`, `/client`, `/shared`) with side-effect free entrypoints and hard CI/runtime boundary enforcement.
+
 ## 0.2.0
 
 ### Minor Changes
