@@ -1,5 +1,22 @@
 # @wrelik/email
 
+## 2.0.0
+
+### Major Changes
+
+- 818ed58: Refactor runtime packages to strict subpath exports (`/server`, `/client`, `/shared`) with side-effect free entrypoints and hard CI/runtime boundary enforcement.
+
+### Minor Changes
+
+- Add platform wrapper packages for Clerk (Next/Expo), Next Sentry client instrumentation, and Upstash server SDK access so apps can avoid direct vendor imports while staying inside the `@wrelik/*` boundary.
+
+  Add temporary deprecated server-side compatibility singleton exports to analytics, email, jobs, and storage to support DRX migration from root-import convenience APIs to runtime subpaths in one cutover.
+
+### Patch Changes
+
+- Updated dependencies [818ed58]
+  - @wrelik/errors@2.0.0
+
 ## 0.1.3
 
 ### Patch Changes

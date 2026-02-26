@@ -1,13 +1,13 @@
 {
-  "name": "@wrelik/email",
-  "version": "2.0.0",
+  "name": "@wrelik/sentry-next",
+  "version": "1.1.0",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lwhite702/wrelik-kit.git",
-    "directory": "packages/email"
+    "directory": "packages/sentry-next"
   },
   "sideEffects": false,
   "exports": {
@@ -34,11 +34,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
   },
-  "dependencies": {
-    "@wrelik/errors": "workspace:*",
-    "resend": "^3.2.0"
+  "peerDependencies": {
+    "@sentry/nextjs": ">=8 <11"
   },
   "devDependencies": {
+    "@sentry/nextjs": "^10.22.0",
+    "@types/node": "^25.2.0",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
     "tsup": "^8.0.1",
@@ -49,6 +50,7 @@
       "server",
       "client",
       "shared"
-    ]
+    ],
+    "packageClass": "platform-wrapper"
   }
 }
