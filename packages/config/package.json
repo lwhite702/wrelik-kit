@@ -1,6 +1,6 @@
 {
   "name": "@wrelik/config",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -45,6 +45,10 @@
     "vitest": "^1.2.2"
   },
   "wrelik": {
-    "runtimes": ["server", "client", "shared"]
+    "runtimes": [
+      "server",
+      "client",
+      "shared"
+    ]
   }
 }

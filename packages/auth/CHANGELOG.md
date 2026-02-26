@@ -1,5 +1,16 @@
 # @wrelik/auth
 
+## 2.0.0
+
+### Major Changes
+
+- 818ed58: Refactor runtime packages to strict subpath exports (`/server`, `/client`, `/shared`) with side-effect free entrypoints and hard CI/runtime boundary enforcement.
+
+### Patch Changes
+
+- Updated dependencies [818ed58]
+  - @wrelik/errors@2.0.0
+
 ## 0.2.2
 
 ### Patch Changes
