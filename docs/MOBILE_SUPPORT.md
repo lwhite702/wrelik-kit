@@ -1,47 +1,80 @@
 # Mobile Support (Expo)
 
-wrelik-kit is designed to support DRX Mobile apps built with Expo.
+wrelik-kit supports Expo through client-safe runtime entrypoints.
 
-## Policy
+## Import Rules
 
-### Environment Variables
+Expo apps may import only:
 
-- **Allowed**: `EXPO_PUBLIC_*` variables are embedded at build time.
-- **Forbidden**: `DATABASE_URL`, `RESEND_API_KEY`, `INNGEST_SIGNING_KEY` etc. must **never** be present in the mobile bundle.
-- use `@wrelik/config/client` to load config safely.
+- `@wrelik/*/client`
+- `@wrelik/*/shared`
 
-### Storage
+Do not import `@wrelik/*/server` from Expo code.
 
-Mobile apps must not use AWS SDK credentials directly.
-**Flow**:
+## Usable Client Entrypoints (Expo-safe)
 
-1. Mobile requests Signed URL from Backend API.
-2. Backend generates Signed URL using `@wrelik/storage/server` (Node).
-3. Mobile uploads/downloads using Signed URL via `@wrelik/storage/client` helpers.
+- `@wrelik/auth/client`
+- `@wrelik/config/client`
+- `@wrelik/errors/client` (error normalization only; no Sentry server capture)
+- `@wrelik/analytics/client`
+- `@wrelik/storage/client`
 
-### Authentication
+## Fail-fast Client Stubs (intentional)
 
-Start with Clerk Expo SDK. Use `@wrelik/auth/client` to map Clerk user objects into shared session shape.
+These packages expose `/client` for a consistent surface, but they throw immediately when imported because they are server-only adapters:
 
-## Usage Examples
+- `@wrelik/db/client`
+- `@wrelik/email/client`
+- `@wrelik/jobs/client`
 
-### Config
+Use your backend API for those operations.
+
+## Security/Bundle Policy
+
+- Allowed: `EXPO_PUBLIC_*` variables only
+- Forbidden in mobile bundles: database credentials, Resend keys, Inngest keys, S3/R2 credentials, server secrets
+- Vendor SDK imports must stay inside `@wrelik/*` packages, not app code
+
+## Example: Auth session mapping
 
 ```ts
-import { loadClientConfig } from '@wrelik/config/client';
+import { mapClerkToSession } from '@wrelik/auth/client';
 
-const config = loadClientConfig({
-  EXPO_PUBLIC_API_URL: z.string().url(),
+const session = mapClerkToSession(clerkPayload);
+```
+
+## Example: Storage upload flow
+
+```ts
+import { uploadToSignedUrl } from '@wrelik/storage/client';
+
+await uploadToSignedUrl({
+  url: signedUploadUrl,
+  file,
+  contentType: file.type,
 });
 ```
 
-### Analytics
+## Example: Analytics client wrapper
 
 ```ts
 import { createAnalyticsClient } from '@wrelik/analytics/client';
 import PostHog from 'posthog-react-native';
 
-PostHog.initAsync('public_key');
+await PostHog.initAsync('public_key');
 const analytics = createAnalyticsClient(PostHog);
-analytics.capture('user.clicked_button', { buttonId: 'submit' });
+analytics.capture('drx.tap.button', { id: 'submit' });
+```
+
+## Example: Error normalization in UI
+
+```ts
+import { normalizeError } from '@wrelik/errors/client';
+
+try {
+  // ... UI action
+} catch (error) {
+  const normalized = normalizeError(error);
+  console.warn(normalized.code, normalized.message);
+}
 ```

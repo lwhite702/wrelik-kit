@@ -30,6 +30,24 @@ Single-app adaptation (optional):
 - If a repository is not package-based, teams MAY maintain a root `CHANGELOG.md` and optional `VERSION` file.
 - This adaptation MUST still preserve SemVer rules and release-note discipline.
 
+## Wrelik package SemVer rubric (`@wrelik/*`)
+
+Apply this rubric to publishable packages in `wrelik-kit`:
+
+- `MAJOR`
+- Breaking export map/runtime subpath changes
+- Behavior changes that require app code updates
+- Error contract changes (shape, thrown error type, capture behavior)
+- `MINOR`
+- Backward-compatible new adapter helpers or options
+- New exports that do not alter existing behavior
+- `PATCH`
+- Backward-compatible fixes/refactors
+- Internal implementation changes with unchanged public contract
+- Docs-only changes (no package publish needed unless bundled with code)
+
+Changesets is the source of truth for package version bumps and changelog generation in this repository.
+
 ## Procedure
 1. Classify change impact.
 2. Create versioning artifact:

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { PermissionDeniedError, TenantRequiredError } from '@wrelik/errors/shared';
-import { createTenantAccessService, withTenantContext, withTransaction } from './index';
+import { applyTenantScope, createTenantAccessService, withTenantContext, withTransaction } from './index';
 
 describe('@wrelik/db/server', () => {
   it('asserts tenant access with injected checker', async () => {
@@ -28,8 +28,20 @@ describe('@wrelik/db/server', () => {
     await expect(withTenantContext('', async () => 'ok')).rejects.toThrow(TenantRequiredError);
   });
 
+  it('always applies tenant filters and preserves other filters', () => {
+    expect(applyTenantScope('t1', { status: 'active' })).toEqual({
+      status: 'active',
+      tenantId: 't1',
+    });
+  });
+
+  it('blocks cross-tenant reads by default', () => {
+    expect(() => applyTenantScope('t1', { tenantId: 't2', status: 'active' })).toThrow(PermissionDeniedError);
+    expect(() => applyTenantScope('', { status: 'active' })).toThrow(TenantRequiredError);
+  });
+
   it('does not expose root or client subpath imports', () => {
     expect(() => require.resolve('@wrelik/db')).toThrow();
-    expect(() => require.resolve('@wrelik/db/client')).toThrow();
+    expect(() => require.resolve('@wrelik/db/client')).not.toThrow();
   });
 });
