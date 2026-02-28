@@ -1,46 +1,27 @@
 # Runtime Migration Guide
 
-This repository now enforces strict runtime subpath imports.
+This repository enforces strict runtime subpath imports for adapter packages.
 
-## Required import changes
+## Required imports (all runtime adapters)
 
-Replace root package imports with runtime-specific subpaths:
+Use explicit subpaths only:
 
-- `@wrelik/auth` -> `@wrelik/auth/server|client|shared`
-- `@wrelik/db` -> `@wrelik/db/server|shared`
-- `@wrelik/config` -> `@wrelik/config/server|client|shared`
-- `@wrelik/errors` -> `@wrelik/errors/server|client|shared`
-- `@wrelik/storage` -> `@wrelik/storage/server|client|shared`
-- `@wrelik/analytics` -> `@wrelik/analytics/server|client|shared`
-- `@wrelik/email` -> `@wrelik/email/server|shared`
-- `@wrelik/jobs` -> `@wrelik/jobs/server|shared`
+- `@wrelik/<pkg>/server`
+- `@wrelik/<pkg>/client`
+- `@wrelik/<pkg>/shared`
 
-## Auth migration
+Runtime adapter root imports (for example `@wrelik/auth`) are forbidden.
 
-1. Move all permission enforcement to server runtime callsites using `@wrelik/auth/server`.
-2. Use `@wrelik/auth/client` only for client-side auth payload mapping.
-3. Use `@wrelik/auth/shared` for shared types.
+## Package notes
 
-## DB migration
+- `@wrelik/db/client`, `@wrelik/email/client`, `@wrelik/jobs/client` are fail-fast stubs for surface consistency. Call backend APIs instead.
+- `@wrelik/errors/client` is client-safe and exposes normalization helpers; server Sentry capture remains on `@wrelik/errors/server`.
+- Expo apps should use only `/client` and `/shared` entrypoints.
 
-1. Consume only `@wrelik/db/server` and `@wrelik/db/shared`.
-2. Migrate legacy global checker patterns to explicit injected services.
-3. Route data writes through `withTransaction` wrappers.
+## Migration checklist
 
-## Config migration
-
-1. Validate server env explicitly with `@wrelik/config/server` at startup/build.
-2. Load client config only from public keys with `@wrelik/config/client`.
-3. Remove any fallback secret defaults.
-
-## CI and validation checklist
-
-1. `pnpm install --frozen-lockfile`
-2. `pnpm check:workspace-integrity`
-3. `pnpm check:runtime-contracts`
-4. `pnpm lint`
-5. `pnpm typecheck`
-6. `pnpm test`
-7. `pnpm build`
-8. `pnpm check:bundles`
-9. `pnpm check:cycles`
+1. Replace root imports with runtime subpaths.
+2. Remove direct vendor SDK imports from app repos.
+3. Move server-only integrations to backend codepaths.
+4. Run app lint/typecheck/tests/build.
+5. Add banned-import lint rules to prevent regressions.

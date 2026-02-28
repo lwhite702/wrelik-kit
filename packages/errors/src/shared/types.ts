@@ -1,6 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ErrorContext = Record<string, any>;
 
+export interface NormalizedError {
+  name: string;
+  message: string;
+  code: string;
+  statusCode: number;
+  context?: ErrorContext;
+}
+
 export class AppError extends Error {
   public readonly code: string;
   public readonly statusCode: number;
@@ -37,4 +45,34 @@ export class ValidationError extends AppError {
   constructor(message: string, context?: ErrorContext) {
     super(message, 'VALIDATION_ERROR', 400, context);
   }
+}
+
+export function normalizeError(err: unknown, context?: ErrorContext): NormalizedError {
+  if (err instanceof AppError) {
+    return {
+      name: err.name,
+      message: err.message,
+      code: err.code,
+      statusCode: err.statusCode,
+      context: context ? { ...err.context, ...context } : err.context,
+    };
+  }
+
+  if (err instanceof Error) {
+    return {
+      name: err.name,
+      message: err.message,
+      code: 'INTERNAL_ERROR',
+      statusCode: 500,
+      context,
+    };
+  }
+
+  return {
+    name: 'Error',
+    message: 'Unknown error',
+    code: 'INTERNAL_ERROR',
+    statusCode: 500,
+    context: context ? { ...context, originalError: err } : { originalError: err },
+  };
 }

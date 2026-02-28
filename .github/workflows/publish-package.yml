@@ -1,9 +1,7 @@
-name: Publish Package
+name: Legacy Publish Package (Deprecated)
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -11,9 +9,14 @@ permissions:
 
 jobs:
   publish:
+    name: Deprecated manual publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Warning
+        run: |
+          echo "This workflow is deprecated."
+          echo "Use .github/workflows/release.yml (Changesets -> npm) as the canonical publish path."
 
       - name: Setup Node
         uses: actions/setup-node@v4

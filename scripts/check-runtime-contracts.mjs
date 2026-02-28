@@ -1,26 +1,32 @@
-import { readFileSync } from 'node:fs';
-
-const runtimePackages = {
-  '@wrelik/auth': ['server', 'client', 'shared'],
-  '@wrelik/analytics': ['server', 'client', 'shared'],
-  '@wrelik/config': ['server', 'client', 'shared'],
-  '@wrelik/db': ['server', 'shared'],
-  '@wrelik/email': ['server', 'shared'],
-  '@wrelik/errors': ['server', 'client', 'shared'],
-  '@wrelik/jobs': ['server', 'shared'],
-  '@wrelik/storage': ['server', 'client', 'shared'],
-};
+import { readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
 
+function collectRuntimePackages() {
+  const packagesDir = 'packages';
+  const manifests = [];
+
+  for (const dir of readdirSync(packagesDir)) {
+    const path = join(packagesDir, dir, 'package.json');
+    const manifest = readJson(path);
+    const runtimes = manifest.wrelik?.runtimes;
+
+    if (!Array.isArray(runtimes) || runtimes.length === 0) {
+      continue;
+    }
+
+    manifests.push({ path, manifest, runtimes });
+  }
+
+  return manifests;
+}
+
 const errors = [];
 
-for (const [packageName, runtimes] of Object.entries(runtimePackages)) {
-  const packageDir = packageName.replace('@wrelik/', '');
-  const path = `packages/${packageDir}/package.json`;
-  const manifest = readJson(path);
+for (const { path, manifest, runtimes } of collectRuntimePackages()) {
   const exportsField = manifest.exports ?? {};
   const runtimeMeta = manifest.wrelik?.runtimes ?? [];
 

@@ -31,3 +31,22 @@ export async function withTransaction<TClient, T>(
 ): Promise<T> {
   return executor.transaction(handler);
 }
+
+export function applyTenantScope<TWhere extends Record<string, unknown>>(
+  tenantId: string,
+  where?: TWhere,
+): TWhere & { tenantId: string } {
+  if (!tenantId) {
+    throw new TenantRequiredError();
+  }
+
+  const tenantIdInWhere = where?.tenantId;
+  if (typeof tenantIdInWhere === 'string' && tenantIdInWhere !== tenantId) {
+    throw new PermissionDeniedError(`Cross-tenant access blocked for tenant ${tenantIdInWhere}`);
+  }
+
+  return {
+    ...(where ?? ({} as TWhere)),
+    tenantId,
+  };
+}
