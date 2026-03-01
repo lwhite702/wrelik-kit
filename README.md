@@ -79,7 +79,38 @@ Use `@wrelik/*` adapters instead. See [Banned Imports](./docs/BANNED_IMPORTS.md)
 
 ## Install and Pin (npm)
 
-Example (DRX app repo):
+See [Mobile Support Docs](./docs/MOBILE_SUPPORT.md) for deeper integration details.
+
+---
+
+## What This Repo Is Not
+
+- Not a UI component library
+- Not app-specific business logic
+- Not a feature playground
+- Not a place to “just put helpers”
+
+Application code lives in app repos.  
+This repo exists to **standardize integrations and enforce discipline**.
+
+---
+
+## App Bootstrap
+
+For starting a new repository that follows Wrelik standards, see the [App Bootstrap Guide](./docs/APP_BOOTSTRAP_GUIDE.md).
+
+For adopting policies in an existing repository, see the [Policy Import Guide](./docs/POLICY_IMPORT_GUIDE.md).
+
+> [!TIP]
+> Use the `/onboard-agentic-repo` workflow to quickly initialize policies and agent guidelines in any repository.
+
+---
+
+## Installation (Apps)
+
+Each app consumes packages from this repo as dependencies.
+
+Example:
 
 ```bash
 pnpm add @wrelik/auth @wrelik/db @wrelik/errors @wrelik/storage

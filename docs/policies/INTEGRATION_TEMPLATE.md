@@ -1,30 +1,34 @@
 # Integration template
 
-Status: Draft  
+Status: Active  
 Owner: <TEAM_NAME>  
 Last Updated: 2026-02-16  
-Applies To: App onboarding and adapter migrations
+Applies To: All new Wrelik app repositories
 
 ## Purpose
-Template for documenting how `<APP_NAME>` integrates `@wrelik/*` packages, including initialization, usage boundaries, and validation gates.
 
-## Scope
-Use this document during:
-- New app setup.
-- Migration from direct vendor SDK usage to `@wrelik/*` adapters.
-- Integration audits.
+Standardize how new applications record their integration with the shared Wrelik platform stack. This document serves as the authoritative record for onboarding health.
+
+## Metadata
+
+- App name: `<APP_NAME>`
+- Repository: `<REPO_URL>`
+- Owner team: `<TEAM_NAME>`
+- Environment matrix: `<ENV_MATRIX_PATH>`
 
 ## Requirements
+
 - The integration record MUST be app-specific and complete before production launch.
 - Adapter initialization MUST be centralized.
 - Direct vendor imports SHOULD be removed from application-layer code when adapter coverage exists.
 
 ## Procedure
+
 1. Fill metadata:
-- App name: `<APP_NAME>`
-- Repository: `<REPO_URL>`
-- Owner team: `<TEAM_NAME>`
-- Environment matrix: `<ENV_MATRIX_PATH>`
+   - App name: `<APP_NAME>`
+   - Repository: `<REPO_URL>`
+   - Owner team: `<TEAM_NAME>`
+   - Environment matrix: `<ENV_MATRIX_PATH>`
 2. List required packages and pinned versions.
 3. Describe bootstrap/initialization order.
 4. Document legacy-to-adapter import replacements.
@@ -32,59 +36,42 @@ Use this document during:
 
 ## Template fields
 
-### App metadata
-- App: `<APP_NAME>`
-- Repo: `<REPO_URL>`
-- Owner: `<TEAM_NAME>`
-- Environment matrix: `<ENV_MATRIX_PATH>`
+### Core adapters
 
-### Dependency method
-- Package manager: `pnpm`
-- Source: npm registry or internal registry mirror
-
-### Integrated packages
-- `@wrelik/auth@<VERSION>`
-- `@wrelik/db@<VERSION>`
-- `@wrelik/storage@<VERSION>`
-- `@wrelik/analytics@<VERSION>`
-- `@wrelik/errors@<VERSION>`
-- `@wrelik/email@<VERSION>`
-- `@wrelik/jobs@<VERSION>`
-- `@wrelik/config@<VERSION>`
+| Category  | Adapter package     | Version | Notes                       |
+| --------- | ------------------- | ------- | --------------------------- |
+| Auth      | `@wrelik/auth`      |         | [e.g. Clerk implementation] |
+| DB        | `@wrelik/db`        |         | [e.g. Neon/Prisma]          |
+| Storage   | `@wrelik/storage`   |         | [e.g. S3/UploadThing]       |
+| Analytics | `@wrelik/analytics` |         |                             |
+| Email     | `@wrelik/email`     |         |                             |
+| Jobs      | `@wrelik/jobs`      |         |                             |
 
 ### Initialization order
-1. Database
-2. Auth
-3. Storage
-4. Analytics
-5. Errors
-6. Jobs
-7. Email
-8. Config
 
-### Validation checks
+Describe the runtime bootstrap sequence (e.g. `Config` -> `Errors` -> `Auth` -> `DB`).
 
-```bash
-pnpm install
-pnpm lint
-pnpm test
-pnpm build
-```
+### Environment Matrix
 
-### Migration checklist
-- [ ] Direct vendor imports replaced where adapter exists.
-- [ ] Central adapter initialization implemented.
-- [ ] Tenant isolation checks added for data boundaries.
-- [ ] Error and analytics capture wired through shared adapters.
-- [ ] Documentation and runbooks updated.
+Link to the project's environment variable documentation.
 
-## Exceptions
-If a direct vendor import is temporarily required, record:
-- Reason.
-- Expected removal date.
-- Owner.
+## Verification
+
+### Automated checks
+
+| Test suite             | Command        | Status |
+| ---------------------- | -------------- | ------ |
+| Workspace integrity    | `pnpm check:*` |        |
+| Adapter contract tests | `pnpm check:*` |        |
+| Typecheck              | `pnpm type:*`  |        |
+
+### Manual audit
+
+- [ ] All direct vendor imports reviewed.
+- [ ] Initialization layer verified in `lib/`.
 
 ## References
+
 - `./STACK_POLICY.md`
-- `./AGENTS_POLICY.md`
+- `./WRELIK_AGENTS.md`
 - `./CHECKLIST_PRERELEASE.md`
