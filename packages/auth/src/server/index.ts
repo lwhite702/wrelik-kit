@@ -1,7 +1,11 @@
 /* eslint-disable no-restricted-imports */
 import type { SignedInAuthObject, SignedOutAuthObject } from '@clerk/backend';
-import { auth } from '@clerk/nextjs';
-import { AuthRequiredError, PermissionDeniedError, TenantRequiredError } from '@wrelik/errors/shared';
+import { auth } from '@clerk/nextjs/server';
+import {
+  AuthRequiredError,
+  PermissionDeniedError,
+  TenantRequiredError,
+} from '@wrelik/errors/shared';
 import type { ClerkSessionLike, WorkflowSession } from '../shared';
 
 function normalizeRoles(value: unknown): string[] {
@@ -12,13 +16,16 @@ function normalizeRoles(value: unknown): string[] {
   return value.filter((role): role is string => typeof role === 'string');
 }
 
-export function fromClerkAuth(clerkAuth: SignedInAuthObject | SignedOutAuthObject | null): WorkflowSession {
+export function fromClerkAuth(
+  clerkAuth: SignedInAuthObject | SignedOutAuthObject | null,
+): WorkflowSession {
   if (!clerkAuth?.userId) {
     return { userId: null, tenantId: null, roles: [] };
   }
 
   const authLike: ClerkSessionLike = clerkAuth;
-  const claims = (authLike.sessionClaims as { publicMetadata?: { roles?: unknown } } | undefined) ?? {};
+  const claims =
+    (authLike.sessionClaims as { publicMetadata?: { roles?: unknown } } | undefined) ?? {};
 
   return {
     userId: clerkAuth.userId,
@@ -27,8 +34,8 @@ export function fromClerkAuth(clerkAuth: SignedInAuthObject | SignedOutAuthObjec
   };
 }
 
-export function getSession(): WorkflowSession {
-  return fromClerkAuth(auth());
+export async function getSession(): Promise<WorkflowSession> {
+  return fromClerkAuth(await auth());
 }
 
 export function requireUser(session: WorkflowSession | null): string {

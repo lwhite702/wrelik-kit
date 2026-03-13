@@ -39,7 +39,7 @@
     "@wrelik/errors": "workspace:*"
   },
   "peerDependencies": {
-    "@clerk/nextjs": "^4.29.0"
+    "@clerk/nextjs": ">=4.29.0"
   },
   "devDependencies": {
     "@wrelik/eslint-config": "workspace:*",
