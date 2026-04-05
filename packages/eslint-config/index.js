@@ -33,7 +33,7 @@ const SERVER_ONLY_SDKS = [
 ];
 
 module.exports = {
-  extends: ['turbo', 'prettier', 'plugin:@typescript-eslint/recommended'],
+  extends: ['next', 'turbo', 'prettier', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'only-warn', 'import'],
   ignorePatterns: ['dist', '**/*.css'],
