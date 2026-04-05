@@ -35,17 +35,20 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@clerk/backend": "^0.38.0",
+    "@clerk/backend": "^3.2.4",
     "@wrelik/errors": "workspace:*"
   },
   "peerDependencies": {
-    "@clerk/nextjs": ">=4.29.0"
+    "@clerk/nextjs": ">=7 <8"
   },
   "devDependencies": {
+    "@clerk/nextjs": "^7.0.8",
+    "@types/node": "^25.5.2",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
-    "tsup": "^8.0.1",
-    "vitest": "^1.2.2"
+    "tsup": "^8.5.1",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.2"
   },
   "wrelik": {
     "runtimes": [

@@ -15,7 +15,9 @@ describe('@wrelik/analytics/server', () => {
     const identify = vi.fn();
     const capture = vi.fn();
     const shutdown = vi.fn(async () => undefined);
-    const PostHog = vi.fn(() => ({ identify, capture, shutdown }));
+    const PostHog = vi.fn(function PostHogMock() {
+      return { identify, capture, shutdown };
+    });
 
     vi.doMock('posthog-node', () => ({ PostHog }));
 

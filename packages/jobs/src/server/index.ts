@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { Inngest } from 'inngest';
 import type { JobTrigger } from '../shared';
 export type { JobTrigger } from '../shared';

@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/lwhite702/wrelik-kit.git"
   },
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.18.3",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -27,17 +27,23 @@
     "check:all": "pnpm check:circular-deps && pnpm check:smoke-test && pnpm check:bundle-scan"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "dependency-cruiser": "^16.10.4",
-    "@turbo/gen": "^1.12.4",
+    "@changesets/cli": "^2.30.0",
+    "@turbo/gen": "^2.9.3",
     "@wrelik/eslint-config": "workspace:^",
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "turbo": "^2.3.3",
-    "typescript": "^5.3.3"
+    "dependency-cruiser": "^17.3.10",
+    "eslint": "^10.1.0",
+    "prettier": "^3.8.1",
+    "turbo": "^2.9.3",
+    "typescript": "^6.0.2",
+    "vite": "^7.3.1"
   },
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "next": "15.5.14"
+    }
   }
 }
