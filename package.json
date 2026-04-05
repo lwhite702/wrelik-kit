@@ -27,6 +27,7 @@
     "check:all": "pnpm check:circular-deps && pnpm check:smoke-test && pnpm check:bundle-scan"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
     "@changesets/cli": "^2.30.0",
     "@turbo/gen": "^2.9.3",
     "@wrelik/eslint-config": "workspace:^",

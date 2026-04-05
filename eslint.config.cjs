@@ -8,10 +8,5 @@ module.exports = [
   ...compat.config({
     root: true,
     extends: ['@wrelik/eslint-config'],
-    settings: {
-      next: {
-        rootDir: ['packages/*/'],
-      },
-    },
   }),
 ];
