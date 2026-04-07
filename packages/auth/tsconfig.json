@@ -2,7 +2,9 @@
   "extends": "@wrelik/tsconfig/next.json",
   "compilerOptions": {
     "incremental": false,
-    "outDir": "dist", "skipLibCheck": true
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "types": ["node"]
   },
   "include": ["src"]
 }

@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-imports */
-import type { SignedInAuthObject, SignedOutAuthObject } from '@clerk/backend';
 import { auth } from '@clerk/nextjs/server';
 import {
   AuthRequiredError,
@@ -16,8 +14,14 @@ function normalizeRoles(value: unknown): string[] {
   return value.filter((role): role is string => typeof role === 'string');
 }
 
+type ClerkAuthLike = {
+  userId: string | null;
+  orgId?: string | null;
+  sessionClaims?: unknown;
+};
+
 export function fromClerkAuth(
-  clerkAuth: SignedInAuthObject | SignedOutAuthObject | null,
+  clerkAuth: ClerkAuthLike | null,
 ): WorkflowSession {
   if (!clerkAuth?.userId) {
     return { userId: null, tenantId: null, roles: [] };

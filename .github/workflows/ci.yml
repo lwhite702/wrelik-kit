@@ -19,15 +19,17 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -58,7 +60,9 @@ jobs:
 
       - name: Check for Changesets
         if: github.event_name == 'pull_request'
-        run: pnpm changeset status
+        run: |
+          git fetch origin main --depth=1
+          pnpm changeset status --since=origin/main
 
   # Runtime safety checks
   runtime-safety:
@@ -68,15 +72,17 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
         run: pnpm install

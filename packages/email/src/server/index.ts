@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { Resend } from 'resend';
 import { ValidationError } from '@wrelik/errors/shared';
 import type { SendEmailOptions, TemplateRenderer } from '../shared';

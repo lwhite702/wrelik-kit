@@ -38,12 +38,13 @@
     "@clerk/clerk-expo": ">=2 <5"
   },
   "devDependencies": {
-    "@clerk/clerk-expo": "^2.19.27",
-    "@types/node": "^25.2.0",
+    "@clerk/clerk-expo": "^2.19.31",
+    "@types/node": "^25.5.2",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
-    "tsup": "^8.0.1",
-    "vitest": "^1.2.2"
+    "tsup": "^8.5.1",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.2"
   },
   "wrelik": {
     "runtimes": [

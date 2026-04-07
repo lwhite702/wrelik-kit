@@ -33,7 +33,7 @@ describe('@wrelik/auth/server', () => {
 
   it('retrieves and normalizes sessions from Clerk auth()', async () => {
     vi.resetModules();
-    vi.doMock('@clerk/nextjs', () => ({
+    vi.doMock('@clerk/nextjs/server', () => ({
       auth: () => ({
         userId: 'u1',
         orgId: 'o1',
@@ -42,17 +42,17 @@ describe('@wrelik/auth/server', () => {
     }));
 
     const mod = await import('./index');
-    expect(mod.getSession()).toEqual({ userId: 'u1', tenantId: 'o1', roles: ['admin'] });
+    await expect(mod.getSession()).resolves.toEqual({ userId: 'u1', tenantId: 'o1', roles: ['admin'] });
   });
 
   it('returns anonymous session when Clerk auth() is signed out', async () => {
     vi.resetModules();
-    vi.doMock('@clerk/nextjs', () => ({
+    vi.doMock('@clerk/nextjs/server', () => ({
       auth: () => ({ userId: null, orgId: null, sessionClaims: {} }),
     }));
 
     const mod = await import('./index');
-    expect(mod.getSession()).toEqual({ userId: null, tenantId: null, roles: [] });
+    await expect(mod.getSession()).resolves.toEqual({ userId: null, tenantId: null, roles: [] });
   });
 
   it('does not expose a root package import', () => {

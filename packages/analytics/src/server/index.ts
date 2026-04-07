@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { PostHog } from 'posthog-node';
 import { validateEventName } from '../shared';
 
