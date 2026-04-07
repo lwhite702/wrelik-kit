@@ -33,7 +33,8 @@ const SERVER_ONLY_SDKS = [
 ];
 
 module.exports = {
-  extends: ['next', 'turbo', 'prettier', 'plugin:@typescript-eslint/recommended'],
+  // Shared config is framework-agnostic; Next.js-specific rules are opt-in at app level.
+  extends: ['turbo', 'prettier', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'only-warn', 'import'],
   ignorePatterns: ['dist', '**/*.css'],
