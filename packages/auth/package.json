@@ -35,7 +35,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@clerk/backend": "^3.2.4",
+    "@clerk/backend": "^3.2.14",
     "@wrelik/errors": "workspace:*"
   },
   "peerDependencies": {
