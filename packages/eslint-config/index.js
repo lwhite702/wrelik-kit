@@ -169,8 +169,4 @@ module.exports = {
   },
 };
 
-// Export constants for programmatic use
-module.exports.serverOnlyPackages = serverOnlyPackages;
-module.exports.serverOnlySubpaths = serverOnlySubpaths;
-module.exports.vendorSdkRestrictions = vendorSdkRestrictions;
-module.exports.nodeOnlyModules = nodeOnlyModules;
+

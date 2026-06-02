@@ -41,4 +41,43 @@ export async function shutdown() {
   // PostHog RN doesn't need explicit shutdown usually
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function capturePageView(url: string, properties: Record<string, any> = {}) {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  PostHog.screen(url, properties);
+}
+
+export function isFeatureEnabled(key: string): boolean {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  return PostHog.isFeatureEnabled(key) ?? false;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getFeatureFlag(key: string): any {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  return PostHog.getFeatureFlag(key);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function onFeatureFlags(callback: (flags: string[], variants: Record<string, any>) => void) {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  PostHog.onFeatureFlags(callback);
+}
+
+export function reloadFeatureFlags() {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  PostHog.reloadFeatureFlags();
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function setUserProperties(properties: Record<string, any>) {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  PostHog.register(properties);
+}
+
+export function reset() {
+  // @ts-expect-error - PostHog RN types might be missing or different version
+  PostHog.reset();
+}
+
 export { PostHog };

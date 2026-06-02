@@ -27,11 +27,33 @@ export function setUserContext(user: { id: string; email?: string } | null) {
   Sentry.setUser(user);
 }
 
-export function initErrors(dsn: string, options?: { tracesSampleRate?: number; environment?: string }) {
+export function initErrors(
+  dsnOrOptions: string | { dsn: string; environment?: string; tracesSampleRate?: number; [key: string]: any },
+  options?: { tracesSampleRate?: number; environment?: string }
+) {
+  let dsn: string;
+  let env: string | undefined;
+  let sampleRate: number | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let extraOptions: any = {};
+
+  if (typeof dsnOrOptions === 'string') {
+    dsn = dsnOrOptions;
+    env = options?.environment;
+    sampleRate = options?.tracesSampleRate;
+  } else {
+    dsn = dsnOrOptions.dsn;
+    env = dsnOrOptions.environment;
+    sampleRate = dsnOrOptions.tracesSampleRate;
+    const { dsn: _, environment: __, tracesSampleRate: ___, ...rest } = dsnOrOptions;
+    extraOptions = rest;
+  }
+
   Sentry.init({
     dsn,
-    tracesSampleRate: options?.tracesSampleRate ?? 1.0,
-    environment: options?.environment,
+    tracesSampleRate: sampleRate ?? 1.0,
+    environment: env,
+    ...extraOptions,
   });
 }
 

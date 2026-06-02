@@ -14,4 +14,6 @@ export function validateEventName(event: string) {
 export interface AnalyticsConfig {
   apiKey: string;
   host?: string;
+  // Allow other options passed directly to underlying providers
+  [key: string]: any;
 }

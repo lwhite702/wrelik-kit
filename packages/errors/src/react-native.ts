@@ -7,11 +7,33 @@ import { AppError } from './shared';
 
 export * from './shared';
 
-export function initErrors(config: { dsn: string; environment?: string; tracesSampleRate?: number }) {
+export function initErrors(
+  dsnOrOptions: string | { dsn: string; environment?: string; tracesSampleRate?: number; [key: string]: any },
+  options?: { tracesSampleRate?: number; environment?: string }
+) {
+  let dsn: string;
+  let env: string | undefined;
+  let sampleRate: number | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let extraOptions: any = {};
+
+  if (typeof dsnOrOptions === 'string') {
+    dsn = dsnOrOptions;
+    env = options?.environment;
+    sampleRate = options?.tracesSampleRate;
+  } else {
+    dsn = dsnOrOptions.dsn;
+    env = dsnOrOptions.environment;
+    sampleRate = dsnOrOptions.tracesSampleRate;
+    const { dsn: _, environment: __, tracesSampleRate: ___, ...rest } = dsnOrOptions;
+    extraOptions = rest;
+  }
+
   Sentry.init({
-    dsn: config.dsn,
-    environment: config.environment || 'production',
-    tracesSampleRate: config.tracesSampleRate ?? 1.0,
+    dsn,
+    tracesSampleRate: sampleRate ?? 1.0,
+    environment: env || 'production',
+    ...extraOptions,
   });
 }
 
