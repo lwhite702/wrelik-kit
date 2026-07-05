@@ -36,15 +36,15 @@
   },
   "dependencies": {
     "@wrelik/errors": "workspace:*",
-    "posthog-node": "^5.28.11"
+    "posthog-node": "^5.39.4"
   },
   "devDependencies": {
-    "@types/node": "^25.5.2",
+    "@types/node": "^26.1.0",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
     "tsup": "^8.5.1",
     "vite": "^7.3.1",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.9"
   },
   "wrelik": {
     "runtimes": [

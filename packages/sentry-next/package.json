@@ -38,14 +38,14 @@
     "@sentry/nextjs": ">=8 <11"
   },
   "devDependencies": {
-    "@sentry/nextjs": "^10.47.0",
-    "@types/node": "^25.5.2",
+    "@sentry/nextjs": "^10.63.0",
+    "@types/node": "^26.1.0",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
     "next": "15.5.14",
     "tsup": "^8.5.1",
     "vite": "^7.3.1",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.9"
   },
   "wrelik": {
     "runtimes": [

@@ -39,14 +39,14 @@
     "@upstash/redis": ">=1 <2"
   },
   "devDependencies": {
-    "@types/node": "^25.5.2",
+    "@types/node": "^26.1.0",
     "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.37.0",
+    "@upstash/redis": "^1.38.0",
     "@wrelik/eslint-config": "workspace:*",
     "@wrelik/tsconfig": "workspace:*",
     "tsup": "^8.5.1",
     "vite": "^7.3.1",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.9"
   },
   "wrelik": {
     "runtimes": [
