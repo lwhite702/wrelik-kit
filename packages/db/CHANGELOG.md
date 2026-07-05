@@ -1,5 +1,12 @@
 # @wrelik/db
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [8083eb8]
+  - @wrelik/errors@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
